@@ -1,4 +1,9 @@
 import google.generativeai as genai
+
+import pyttsx3
+import speech_recognition as sr
+import whisper
+
 from dotenv import load_dotenv
 import os
 load_dotenv()
@@ -26,6 +31,45 @@ def chat():
 
 
 def interview():
-    behave = f""" 
-    Your task is to ask the user interview questions. His skills r. You will randomly keep the interview between 5-30 mins. Keep it professonal, and before ending, say a proper closure.    
-    """
+
+
+    def record():
+        r = sr.Recognizer()
+
+        with sr.Microphone() as source:
+            print("Speak Now >>>>  ")
+            r.adjust_for_ambient_noise(source)  
+            audio = r.listen(source)  
+            
+        print("Done recording")
+
+
+        text = r.recognize_google(audio, language="en-IN")
+        print(text)
+
+        
+        #for saving the audio
+        #with open("input.wav", "wb") as f:
+            #f.write(audio.get_wav_data())
+
+
+    
+
+
+    def text_to_speech():
+        engine = pyttsx3.init()
+
+        voices = engine.getProperty('voices')
+
+
+        engine.setProperty('voice', voices[1].id) #1 is female voice
+
+
+        engine.say("Hello Brother how r u")
+        engine.runAndWait()
+
+
+    
+    record()
+
+interview()
